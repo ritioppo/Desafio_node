@@ -1,0 +1,599 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API do restaurante",
+        "description": "Minha API foi desenvolvida para o gerenciamento de produtos e pedidos de restaurantes",
+        "contact": {
+            "email": "arthur_riccioppo@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000",
+            "description": "Meu servirdos esta rodando nessa porta"
+        }
+    ],
+    "paths": {
+        "/restaurantes": {
+            "post": {
+                "summary": "Cadastro de restaurante",
+                "description": "Essa rota será resposável por cadastrar um novo restaurante",
+                "tags": [
+                    "Restaurante"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Restaurante"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "ERORR"
+                    },
+                    "201": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Restaurante"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Retorno de todos os restaurante",
+                "description": "Essa rota será resposável por retortornar todos os restaurantes",
+                "tags": [
+                    "Restaurante"
+                ],
+                "responses": {
+                    "500": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Restaurante"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurantes/{id}": {
+            "get": {
+                "summary": "Retorno de restaurante",
+                "description": "Essa rota será resposável por retornar um unico restaurante",
+                "tags": [
+                    "Restaurante"
+                ],
+                "responses": {
+                    "404": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Restaurante"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletar restaurante",
+                "description": "Essa rota será resposável por deletar um restaurante",
+                "tags": [
+                    "Restaurante"
+                ],
+                "responses": {
+                    "422": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Restaurante"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "ERROR"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Atualzição de dados do restaurante",
+                "description": "Essa rota será resposável por alterar um ou mais dados do restaurante",
+                "tags": [
+                    "Restaurante"
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Usuario nao encontrado"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Restaurante"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/restaurantes/auth/login": {
+            "post": {
+                "summary": "logar com o restaurante",
+                "description": "Essa rota autentica um restaurante retornando um token",
+                "tags": [
+                    "Login"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Login_request"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Autenticação bem sucedida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Login_response"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Usuario nao encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Senha inválida",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "não autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Restaurante"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "ERRO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pedidos": {
+            "post": {
+                "summary": "Cadastro de pedidos",
+                "description": "Essa rota será resposável por cadastrar um novo pedido",
+                "tags": [
+                    "Pedidos"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Pedidos"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "ERORR"
+                    },
+                    "201": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pedidos"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Retorno de todos os pedidos",
+                "description": "Essa rota será resposável por retortornar todos os pedidos",
+                "tags": [
+                    "Pedidos"
+                ],
+                "responses": {
+                    "500": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pedidos"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/pedidos/{id}": {
+            "get": {
+                "summary": "Retorno de pedido",
+                "description": "Essa rota será resposável por retornar um unico pedido",
+                "tags": [
+                    "Pedidos"
+                ],
+                "responses": {
+                    "404": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pedidos"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletar pedido",
+                "description": "Essa rota será resposável por deletar um pedido",
+                "tags": [
+                    "Pedidos"
+                ],
+                "responses": {
+                    "422": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pedidos"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "ERROR"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Atualizacão de pedido",
+                "description": "Essa rota será resposável por atualizar os dados de um pedido",
+                "tags": [
+                    "Pedidos"
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Usuario nao encontrado"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Pedidos"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/person": {
+            "post": {
+                "summary": "Cadastro de produtos",
+                "description": "Essa rota será resposável por cadastrar um novo produto",
+                "tags": [
+                    "Produto"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Produto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "422": {
+                        "description": "ERORR"
+                    },
+                    "201": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Produto"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Retorno de todos os produtos",
+                "description": "Essa rota será resposável por retortornar todos os produtos",
+                "tags": [
+                    "Produto"
+                ],
+                "responses": {
+                    "500": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Produto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/person/{id}": {
+            "get": {
+                "summary": "Retorno de produto",
+                "description": "Essa rota será resposável por retornar um unico produto",
+                "tags": [
+                    "Produto"
+                ],
+                "responses": {
+                    "404": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Produto"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deletar produto",
+                "description": "Essa rota será resposável por deletar um produto",
+                "tags": [
+                    "Produto"
+                ],
+                "responses": {
+                    "422": {
+                        "description": "ERORR"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Produto"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "ERROR"
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Atualzição de produtos",
+                "description": "Essa rota será resposável por atualizar um ou mais produtos do restaurante",
+                "tags": [
+                    "Produto"
+                ],
+                "responses": {
+                    "422": {
+                        "description": "Usuario nao encontrado"
+                    },
+                    "200": {
+                        "description": "SUCESSO",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "$ref": "#/components/schemas/Produto"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Restaurante": {
+                "type": "object",
+                "properties": {
+                    "nome": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "senha": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "number"
+                    },
+                    "categoria": {
+                        "type": "string"
+                    },
+                    "cidade": {
+                        "type": "string"
+                    },
+                    "telefone": {
+                        "type": "string"
+                    },
+                    "endereco": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Produto": {
+                "type": "object",
+                "properties": {
+                    "nome": {
+                        "type": "string"
+                    },
+                    "descricao": {
+                        "type": "string"
+                    },
+                    "quantidade": {
+                        "type": "string"
+                    },
+                    "preco": {
+                        "type": "string"
+                    },
+                    "categoria": {
+                        "type": "string"
+                    },
+                    "restaurante_id": {
+                        "type": "number"
+                    }
+                }
+            },
+            "Pedidos": {
+                "type": "object",
+                "properties": {
+                    "valor_total": {
+                        "type": "string"
+                    },
+                    "nome_cliente": {
+                        "type": "string"
+                    },
+                    "cidade_cliente": {
+                        "type": "string"
+                    },
+                    "endereco_cliente": {
+                        "type": "string"
+                    },
+                    "id_restaurante": {
+                        "type": "number"
+                    },
+                    "telefone_cliente": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Login_request": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "senha": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Login_response": {
+                "type": "object",
+                "properties": {
+                    "msg": {
+                        "type": "string"
+                    },
+                    "token": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
